@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-export const StoreContext = createContext(null);
 import axios from "axios";
+
+export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
 
@@ -71,6 +72,7 @@ const StoreContextProvider = (props) => {
         token,
         setToken
     }
+    
     return (
         <StoreContext.Provider value={contextValue} >
             {props.children}
