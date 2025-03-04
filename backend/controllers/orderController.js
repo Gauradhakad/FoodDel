@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 // placing user order from frontend
 const placeOrder = async (req, res) => {
     
-    const frontend_url = `http://localhost:5174`
+    const frontend_url = process.env.FRONTEND_URL || `http://localhost:5174`
 
     try {
         console.log("Stripe Secret Key:", process.env.STRIPE_SECRET_KEY);
@@ -40,7 +40,7 @@ const placeOrder = async (req, res) => {
             price_data: {
                 currency: "inr",
                 product_data: {
-                    name: "Delievery Charges"
+                    name: "Delivery Charges"
                 },
                 unit_amount: 2 * 100 * 80
             },
@@ -65,15 +65,15 @@ const placeOrder = async (req, res) => {
 const verifyOrder = async(req,res) =>{
     const {orderId , success} = req.body;
     try {
-        if(success=="true"){
+        if(success==="true"){
             await orderModel.findByIdAndUpdate(orderId,{payment:true});
             res.json({success:true,message:"PAID"});
         }
         else{
-            await findByIdAndDelete(orderId);
+            await orderModel.findByIdAndDelete(orderId);
             res.json({success:false,message:"NOT PAID"});
         }
-    } catch (error) {O
+    } catch (error) {
         console.log(error);
         res.json({success:false,message:"ERROR"})
     }
